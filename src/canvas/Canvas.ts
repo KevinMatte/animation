@@ -36,8 +36,8 @@ class Canvas {
             return;
 
         const compStyles = window.getComputedStyle(this.canvas);
-        this.canvas.width = parseInt(compStyles.width.substr(0, compStyles.width.length - 2), 10);
-        this.canvas.height = parseInt(compStyles.height.substr(0, compStyles.height.length - 2), 10);
+        this.canvas.width = parseInt(compStyles.width.substring(0, compStyles.width.length - 2), 10);
+        this.canvas.height = parseInt(compStyles.height.substring(0, compStyles.height.length - 2), 10);
         // this.canvas.width = Math.floor(this.canvas.offsetWidth);
         // this.canvas.height = Math.floor(this.canvas.offsetHeight);
     }
