@@ -1,21 +1,10 @@
-import {Button} from '@mui/material';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import type {ButtonEvent, MenuButtonDefn, MenuHandler} from "./MenuTypes.ts";
 import * as React from "react";
+import {Button} from "@mui/material";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
-type MenuTypeDefn = {
-    label: string;
-    name: string;
-};
-type MenuButtonDefn = {
-    name: string;
-    label: string;
-    items: Array<MenuTypeDefn>;
-};
-type ButtonEvent = React.MouseEvent<HTMLAnchorElement> | React.MouseEvent<HTMLLIElement>;
-type Handler = (path: string) => void;
-
-function MenuComponent({defn, handler}: { defn: MenuButtonDefn, handler: Handler }) {
+export function MenuComponent({defn, handler}: { defn: MenuButtonDefn, handler: MenuHandler }) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -61,24 +50,4 @@ function MenuComponent({defn, handler}: { defn: MenuButtonDefn, handler: Handler
             }
         </Menu>
     </>;
-}
-
-export function FullMenu({handler}: {handler: Handler}) {
-    const defns: Array<MenuButtonDefn> = [
-        {
-            label: "File",
-            name: 'file',
-            items: [
-                {name: 'profile', label: 'Profile'},
-                {name: 'account', label: 'My Account'},
-                {name: 'logout', label: 'Logout'},
-            ]
-        }
-    ];
-
-    return (
-        <>
-            {defns.map((defn) => (<MenuComponent key={defn.name} defn={defn} handler={handler} />))}
-        </>
-    );
 }

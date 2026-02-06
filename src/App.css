@@ -11,29 +11,6 @@
   }
 }
 
-.flexVDisplay {
-  display: flex;
-  flex-wrap: nowrap;
-  flex-direction: column;
-}
-
-.flexVFill {
-  flex: 1;
-  align-items: stretch;
-  overflow: auto;
-}
-
-.flexHDisplay {
-  display: flex;
-  flex-wrap: nowrap;
-  flex-direction: row;
-}
-
-.flexHDisplayWrap {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .flexHFill {
   flex: 1;
   overflow: auto;

@@ -1,14 +1,16 @@
 import {useEffect, useId, useRef, useState} from "react";
 import ScrollBarCanvas, {type CanvasScrollbarListener} from "./ScrollBarCanvas.ts";
+import type {CanvasAny} from "./CanvasTypes.ts";
 
 // 1. Define the constant values using an object literal and 'as const'
-export const Orientation = {
+const Orientation = {
     horizontal: "km_spd_col_scroll",
     vertical: "km_spd_row_scroll",
 } as const;
+export {Orientation}
 
 // 2. Create a union type from the values of the object
-export type OrientationType = typeof Orientation[keyof typeof Orientation];
+type OrientationType = typeof Orientation[keyof typeof Orientation];
 
 function ScrollBar(
     {
@@ -21,7 +23,7 @@ function ScrollBar(
         orientation: OrientationType,
         extraClassNames: string,
         listener: CanvasScrollbarListener,
-        [_prop:string]: any;
+        [_prop:string]: CanvasAny;
     }
 ) {
     const classNames = `${extraClassNames} ${orientation}`;
@@ -44,7 +46,7 @@ function ScrollBar(
         if (canvasRef.current) {
             canvasScrollbar.setup(canvasRef.current);
         }
-    }, []);
+    }, [canvasScrollbar]);
 
     return (
         <canvas id={id} ref={canvasRef} className={classNames} {...props}></canvas>

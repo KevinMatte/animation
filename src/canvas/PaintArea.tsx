@@ -3,19 +3,14 @@ import {PenDrawer} from "./PenDrawer.ts";
 import {useContext} from "react";
 import ImageContext from "./ImageContext.ts";
 
-export const DrawEnum = {
-    line: "line",
-    circle: "circle",
-} as const;
-export type DrawType = typeof DrawEnum[keyof typeof DrawEnum];
+type DrawType = "line" | "circle";
 
-
-export function PaintArea({topX, topY, drawType, ...props}:
+export default function PaintArea({topX, topY, drawType, ...props}:
                           {
                               drawType: DrawType,
                               topX: number,
                               topY: number,
-                              [_prop: string]: any
+                              [_prop: string]: string | number | object
                           }
 ) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -48,7 +43,7 @@ export function PaintArea({topX, topY, drawType, ...props}:
             if (drawer)
                 drawer.destroy();
         }
-    }, []);
+    }, [drawer]);
 
     return (
         <div id="DrawAreaCanvas" className="fill">

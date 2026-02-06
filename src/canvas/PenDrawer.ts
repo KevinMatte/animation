@@ -1,7 +1,8 @@
 import Canvas from "../canvas/Canvas.ts";
 import ImageHolder from "./ImageHolder.ts";
+import type {DrawerPaint, PaintData} from "./CanvasTypes.ts";
 
-class PenDrawer extends Canvas {
+class PenDrawer extends Canvas implements DrawerPaint {
     mouseDownEvent: MouseEvent | null = null;
     mouseUpEvent: MouseEvent | null = null;
 
@@ -15,10 +16,11 @@ class PenDrawer extends Canvas {
         this.imageHolder = imageHolder;
     }
 
-    static paint(imageHolder: ImageHolder, data:any): void {
-        let ctx = imageHolder.getContext2D();
+    paint(imageHolder: ImageHolder, data:PaintData): void
+    {
+        const ctx: CanvasRenderingContext2D | null = imageHolder.getContext2D();
         if (ctx) {
-            let points = data as [x:number, y:number][];
+            const points = data;
             for (let i=0; i<points.length - 1; i++)
                 ImageHolder.drawLine(ctx, points[i][1], points[i][0], points[i+1][0], points[i+1][1]);
         }
@@ -69,15 +71,15 @@ class PenDrawer extends Canvas {
     }
 
     handleMouseMove(event: MouseEvent) {
-        let ctx = this.canvas?.getContext('2d');
+        const ctx = this.canvas?.getContext('2d');
         if (!ctx || !this.isDrawing) return;
         const currentPos = this.getMousePos(event);
         this.points.push([currentPos.x, currentPos.y]);
 
-        let fromX = this.lastPosition.x;
-        let fromY = this.lastPosition.y;
-        let toX = currentPos.x;
-        let toY = currentPos.y;
+        const fromX = this.lastPosition.x;
+        const fromY = this.lastPosition.y;
+        const toX = currentPos.x;
+        const toY = currentPos.y;
         ImageHolder.drawLine(ctx, fromX, fromY, toX, toY);
 
         this.lastPosition = currentPos;

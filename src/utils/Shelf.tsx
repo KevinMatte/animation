@@ -1,4 +1,5 @@
 import type {ReactNode} from "react";
+import type {MenuAny} from "./MenuTypes.ts";
 
 export default function Shelf({direction, flex, style, fill, children, ...props}:
                                 {
@@ -7,7 +8,7 @@ export default function Shelf({direction, flex, style, fill, children, ...props}
                                     style?: object,
                                     children?: ReactNode,
                                     fill?: boolean,
-                                    [_prop: string]: any
+                                    [_prop: string]: MenuAny
                                 }) {
     // Take caller's style
     style = style ? Object.assign({}, style) : {};

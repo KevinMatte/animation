@@ -1,35 +1,31 @@
-type DrawerPaint = {
-    paint(imageHolder: ImageHolder, data:any): void;
-}
-
-export {type DrawerPaint};
+import type {DrawerPaint, ImageData} from "./CanvasTypes.ts";
 
 class ImageHolder {
-    images: {aClass: DrawerPaint, data:any}[] = [];
+    images: Array<{aClass: DrawerPaint, data: ImageData}> = [];
     canvas: HTMLCanvasElement | null = null;
 
     constructor() {
     }
 
+    // noinspection JSUnusedGlobalSymbols
     setCanvas(canvas: HTMLCanvasElement) {
-        this.canvas = canvas;
+         this.canvas = canvas;
     }
 
     getContext2D() {
         if (!this.canvas)
             return null;
-        let ctx = this.canvas.getContext('2d');
-        return ctx;
+        return this.canvas.getContext('2d');
     }
 
-    addImage(aClass: DrawerPaint, data: any) {
-        this.images.push({aClass: aClass, data:data});
-
+    addImage(aClass: DrawerPaint, data: ImageData) {
+        this.images.push({aClass, data});
     }
 
-    paint() {
+    // noinspection JSUnusedGlobalSymbols
+    paint(){
         for (let i=0; i<this.images.length; i++) {
-            let classVar = this.images[i].aClass;
+            const classVar = this.images[i].aClass;
             classVar.paint(this, this.images[i].data);
         }
     }

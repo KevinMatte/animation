@@ -15,7 +15,7 @@ class Canvas {
         this.handleResize(new UIEvent('resize', {}));
     }
 
-    getMousePos(event: MouseEvent) {
+    public getMousePos(event: MouseEvent) {
         if (!this.canvas)
             return {x: 0, y: 0};
 

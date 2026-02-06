@@ -43,6 +43,7 @@ class ScrollBarCanvas extends Canvas {
         this._setRange(minIndex, maxIndex, visibleIndices, step);
     }
 
+    // noinspection JSUnusedGlobalSymbols
     setVisible(visible: number) {
         this.visibleIndices = visible;
         this.redraw();
@@ -52,8 +53,9 @@ class ScrollBarCanvas extends Canvas {
         this.setIndex(this.index);
     }
 
+    // noinspection JSUnusedGlobalSymbols
     setRange(minValue = 0, maxValue = 100, visible = 30, step = 1) {
-        let hasChange = (this.maxIndex !== maxValue) || (this.minIndex !== minValue) ||
+        const hasChange = (this.maxIndex !== maxValue) || (this.minIndex !== minValue) ||
             (this.visibleIndices !== visible) || (this.indexStep !== step);
         this._setRange(minValue, maxValue, visible, step);
         if (hasChange)
@@ -73,15 +75,15 @@ class ScrollBarCanvas extends Canvas {
     handleClickEvent(event: MouseEvent) {
         if (!this.canvas) return;
 
-        let offset = this.onX ? event.offsetX : event.offsetY;
-        let mouseDownEvent = this.mouseDownEvent;
+        const offset = this.onX ? event.offsetX : event.offsetY;
+        const mouseDownEvent = this.mouseDownEvent;
 
         // Save starting position using event.
         if (mouseDownEvent !== null) {
             this.mouseDownEvent = null;
             if (event.offsetX >= 0 && event.offsetY >= 0 &&
                 event.offsetX <= this.canvas.offsetWidth && event.offsetY <= this.canvas.offsetHeight) {
-                let index = this.convertLineStartToIndex(offset - this.lineLength / 2);
+                const index = this.convertLineStartToIndex(offset - this.lineLength / 2);
                 if (this.setIndex(index))
                     this.listener(this.onX, index);
             }
@@ -91,7 +93,7 @@ class ScrollBarCanvas extends Canvas {
 
     handleMouseDown(event: MouseEvent) {
         this.mouseDownEvent = event;
-        let dragStart = this.onX ? event.offsetX : event.offsetY;
+        const dragStart = this.onX ? event.offsetX : event.offsetY;
         if (dragStart >= this.lineStart && dragStart <= this.lineStart + this.lineLength) {
             this.dragStart = dragStart;
             this.fromLineStart = this.lineStart;
@@ -105,8 +107,8 @@ class ScrollBarCanvas extends Canvas {
 
         this.mouseDownEvent = null;
 
-        let lineStartDelta = (this.onX ? event.offsetX : event.offsetY) - this.dragStart;
-        let index = this.convertLineStartToIndex(this.fromLineStart + lineStartDelta);
+        const lineStartDelta = (this.onX ? event.offsetX : event.offsetY) - this.dragStart;
+        const index = this.convertLineStartToIndex(this.fromLineStart + lineStartDelta);
         if (this.setIndex(index))
             this.listener(this.onX, index);
     }
@@ -140,7 +142,7 @@ class ScrollBarCanvas extends Canvas {
     setIndex(index: number) {
         index = Math.max(this.minIndex, index);
         index = Math.min(this.minIndex + this.indexRange - this.visibleIndices, index);
-        let change = this.index !== index;
+        const change = this.index !== index;
 
         this.index = index;
         let lineStart = (index - this.minIndex) * this.canvasRange / this.indexRange;
@@ -148,14 +150,14 @@ class ScrollBarCanvas extends Canvas {
             lineStart = this.canvasRange - this.lineLength;
 
         if (!this.canvas) return;
-        let ctx = this.canvas.getContext('2d');
+        const ctx = this.canvas.getContext('2d');
         if (!ctx)
             return;
 
         ctx.fillStyle = "white";
         ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         ctx.beginPath();
-        let lineThickness = (this.onX ? this.canvas.height : this.canvas.width) / 2;
+        const lineThickness = (this.onX ? this.canvas.height : this.canvas.width) / 2;
         ctx.lineWidth = lineThickness;
         ctx.strokeStyle = 'green';
         if (this.onX) {

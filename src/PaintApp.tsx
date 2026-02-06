@@ -1,6 +1,6 @@
 import '@/App.css'
 import {useState} from 'react';
-import {PaintArea, DrawEnum} from "./canvas/PaintArea.tsx";
+import PaintArea from "./canvas/PaintArea.tsx";
 import ScrollBar from "./canvas/ScrollBar.tsx";
 import {Orientation} from "./canvas/ScrollBar.tsx";
 import ImageHolder from "./canvas/ImageHolder.ts";
@@ -39,7 +39,7 @@ function PaintApp() {
                     <Shelf id="kevin" direction="column" fill
                            style={{overflow: 'hidden'}}
                     >
-                        <PaintArea className="fill" drawType={DrawEnum.line} topX={x} topY={y}></PaintArea>
+                        <PaintArea className="fill" drawType={"line"} topX={x} topY={y}></PaintArea>
                     </Shelf>
                     <ScrollBar extraClassNames="flexFixed" orientation={Orientation.vertical}
                                listener={scrollBarListener} style={leftLineStyle}/>
