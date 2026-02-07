@@ -1,5 +1,6 @@
 import {useEffect, useId, useRef, useState} from "react";
-import {PenDrawer} from "./PenDrawer.ts";
+import {useContext} from "react";
+import PaintAreaModelContext from "./PaintAreaModelContext.ts";
 import DrawerGroup from "./DrawerGroup.ts";
 
 type DrawType = "line" | "circle";
@@ -14,33 +15,24 @@ export default function PaintArea({topX, topY, drawType, ...props}:
 ) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const id = useId()
-    const drawerGroup = new DrawerGroup();
+    const paintAreaModel = useContext(PaintAreaModelContext);
 
-    function createDrawer() {
-
-        let drawer: PenDrawer|null;
-        switch (drawType) {
-            case "line":
-                drawer = new PenDrawer();
-                break;
-            default:
-                drawer = null;
-                break;
-        }
-        return drawer;
+    function createDrawerGroup() {
+        return new DrawerGroup();
     }
 
-    const [drawer, _setDrawer] = useState(createDrawer);
+    const [drawer, _setDrawer] = useState(createDrawerGroup);
 
     useEffect(() => {
         if (canvasRef.current && drawer) {
-            drawer.setProps(canvasRef.current, topX, topY);
+            drawer.setCanvas(canvasRef.current);
+            paintAreaModel?.setDrawerGroup(drawer);
         }
         return () => {
             if (drawer)
                 drawer.destroy();
         }
-    }, [drawer]);
+    }, [drawer, canvasRef]);
 
     return (
         <div id="DrawAreaCanvas" className="fill">

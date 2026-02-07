@@ -25,22 +25,22 @@ function PaintApp() {
     }
 
     return (
-            <Shelf direction="column" fill>
-                <Shelf direction="row" flex="1">
-                    <Shelf id="kevin" direction="column" fill
-                           style={{overflow: 'hidden'}}
-                    >
-                        <PaintArea className="fill" drawType={"line"} topX={x} topY={y}></PaintArea>
-                    </Shelf>
-                    <ScrollBar extraClassNames="flexFixed" orientation={Orientation.vertical}
-                               listener={scrollBarListener} style={leftLineStyle}/>
+        <Shelf direction="column" fill>
+            <Shelf direction="row" flex="1">
+                <Shelf id="kevin" direction="column" fill
+                       style={{overflow: 'hidden'}}
+                >
+                    <PaintArea className="fill" drawType={"line"} topX={x} topY={y}></PaintArea>
                 </Shelf>
-                <Shelf direction="row" style={topLineStyle}>
-                    <ScrollBar extraClassNames="flexHFill" orientation={Orientation.horizontal}
-                               listener={scrollBarListener}/>
-                    <Shelf className="km_spd_scroll_thickness" style={{background: 'grey'}}></Shelf>
-                </Shelf>
+                <ScrollBar extraClassNames="flexFixed" orientation={Orientation.vertical}
+                           listener={scrollBarListener} style={leftLineStyle}/>
             </Shelf>
+            <Shelf direction="row" style={topLineStyle}>
+                <ScrollBar extraClassNames="flexHFill" orientation={Orientation.horizontal}
+                           listener={scrollBarListener}/>
+                <Shelf className="km_spd_scroll_thickness" style={{background: 'grey'}}></Shelf>
+            </Shelf>
+        </Shelf>
     )
 }
 

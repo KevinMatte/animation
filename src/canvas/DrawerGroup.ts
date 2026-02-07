@@ -1,13 +1,22 @@
 import type {DrawerIfc, DrawerStateListener} from "./CanvasTypes.ts";
+import Canvas from "./Canvas.ts";
+import {bindHandlers} from "../utils/listeners.ts";
 
-class DrawerGroup  implements DrawerIfc, DrawerStateListener {
+class DrawerGroup extends Canvas implements DrawerIfc, DrawerStateListener {
     images: Array<{drawer: DrawerIfc}> = [];
-    canvas?: HTMLCanvasElement;
     drawerStateListener?: DrawerStateListener;
     currentDrawer?: DrawerIfc;
 
     constructor() {
-        console.log('');
+        super();
+        bindHandlers(this);
+    }
+
+    startDrawer(drawer: DrawerIfc) {
+        if (this.canvas) {
+            this.currentDrawer = drawer;
+            drawer.startDrawing(this, this.canvas, 0, 0);
+        }
     }
 
     // noinspection JSUnusedGlobalSymbols

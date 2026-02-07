@@ -3,18 +3,15 @@ import PaintApp from "./PaintApp.tsx";
 import {Button} from '@mui/material';
 import Shelf from "./utils/Shelf.tsx";
 import {MenuBar} from "./utils/MenuBar.tsx";
-import type {MenuHandler} from "./utils/MenuTypes.tsx";
+import PaintAreaModel from "./canvas/PaintAreaModel.ts";
+import {useState} from "react";
+import PaintAreaModelContext from "./canvas/PaintAreaModelContext.ts";
 // import * as React from "react";
 // import CssBaseline from '@mui/material/CssBaseline';
 
 function App() {
     const queryString = window.location.search;
     const queryParams = new URLSearchParams(queryString);
-
-    const menuHandler: MenuHandler = (path: string) => {
-        alert(`MenuPath not handled: ${path}`);
-    };
-
 
     const back = queryParams.get('back');
     let backElement = <></>;
@@ -29,6 +26,14 @@ function App() {
         );
     }
 
+    function createPaintAreaModel() {
+        return new PaintAreaModel();
+    }
+
+    const [imageHolder, _setImageHolder] = useState<PaintAreaModel>(createPaintAreaModel);
+
+
+
     return (
         <>
             {/*<CssBaseline />*/}
@@ -37,11 +42,13 @@ function App() {
                     {backElement}: This is WIP. Nothing here to see. :-)
                 </Shelf>
                 <Shelf direction="row">
-                    <MenuBar handler={menuHandler}>
+                    <MenuBar handler={imageHolder?.handleMenu}>
                     </MenuBar>
                 </Shelf>
                 <Shelf flex="1">
-                    <PaintApp/>
+                    <PaintAreaModelContext value={imageHolder}>
+                        <PaintApp/>
+                    </PaintAreaModelContext>
                 </Shelf>
                 {/*</div>*/}
             </Shelf>

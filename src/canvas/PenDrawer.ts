@@ -10,9 +10,21 @@ class PenDrawer extends Canvas implements DrawerIfc {
     lastPosition = {x: 0, y: 0};
     points: Array<{x: number, y:number}> = [];
 
-    startDrawing(drawerStateListener: DrawerStateListener): void {
+    startDrawing(
+        drawerStateListener: DrawerStateListener,
+        canvas: HTMLCanvasElement, _topX: number, _topY: number
+    ): void {
         this.drawerStateListener = drawerStateListener;
+        this.setup(canvas);
+        if (!this.canvas)
+            return;
+        this.canvas.addEventListener('mousedown', this.handleMouseDown);
+        this.canvas.addEventListener('mouseup', this.handleMouseUp);
+        this.canvas.addEventListener('mouseout', this.handleMouseUp);
+        this.canvas.addEventListener('click', this.handleMouseClick);
+        this.canvas.addEventListener('mousemove', this.handleMouseMove);
     }
+
 
     paint(ctx: CanvasRenderingContext2D): void
     {
@@ -23,17 +35,6 @@ class PenDrawer extends Canvas implements DrawerIfc {
             ctx.moveTo(point.x, point.y);
         }
         ctx.stroke();
-    }
-
-    setProps(canvas: HTMLCanvasElement, _topX: number, _topY: number) {
-        super.setup(canvas);
-        if (!this.canvas)
-            return;
-        this.canvas.addEventListener('mousedown', this.handleMouseDown);
-        this.canvas.addEventListener('mouseup', this.handleMouseUp);
-        this.canvas.addEventListener('mouseout', this.handleMouseUp);
-        this.canvas.addEventListener('click', this.handleMouseClick);
-        this.canvas.addEventListener('mousemove', this.handleMouseMove);
     }
 
     destroy() {
