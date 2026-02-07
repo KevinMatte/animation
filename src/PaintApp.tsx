@@ -3,8 +3,6 @@ import {useState} from 'react';
 import PaintArea from "./canvas/PaintArea.tsx";
 import ScrollBar from "./canvas/ScrollBar.tsx";
 import {Orientation} from "./canvas/ScrollBar.tsx";
-import DrawerGroup from "./canvas/DrawerGroup.ts";
-import ImageContext from "./canvas/ImageContext.ts";
 import Shelf from "./utils/Shelf.tsx";
 
 function PaintApp() {
@@ -19,12 +17,6 @@ function PaintApp() {
         borderWidth: "0 0 0 1px",
     }
 
-    function createImageHolder() {
-        return new DrawerGroup();
-    }
-
-    const [imageHolder, _setImageHolder] = useState<DrawerGroup>(createImageHolder);
-
     function scrollBarListener(onX: boolean, pos: number) {
         if (onX)
             setX(pos);
@@ -33,7 +25,6 @@ function PaintApp() {
     }
 
     return (
-        <ImageContext value={imageHolder}>
             <Shelf direction="column" fill>
                 <Shelf direction="row" flex="1">
                     <Shelf id="kevin" direction="column" fill
@@ -50,7 +41,6 @@ function PaintApp() {
                     <Shelf className="km_spd_scroll_thickness" style={{background: 'grey'}}></Shelf>
                 </Shelf>
             </Shelf>
-        </ImageContext>
     )
 }
 

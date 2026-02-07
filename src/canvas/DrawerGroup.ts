@@ -7,6 +7,7 @@ class DrawerGroup  implements DrawerIfc, DrawerStateListener {
     currentDrawer?: DrawerIfc;
 
     constructor() {
+        console.log('');
     }
 
     // noinspection JSUnusedGlobalSymbols

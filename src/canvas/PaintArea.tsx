@@ -1,7 +1,6 @@
 import {useEffect, useId, useRef, useState} from "react";
 import {PenDrawer} from "./PenDrawer.ts";
-import {useContext} from "react";
-import ImageContext from "./ImageContext.ts";
+import DrawerGroup from "./DrawerGroup.ts";
 
 type DrawType = "line" | "circle";
 
@@ -15,11 +14,9 @@ export default function PaintArea({topX, topY, drawType, ...props}:
 ) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const id = useId()
-    const imageHolder = useContext(ImageContext);
+    const drawerGroup = new DrawerGroup();
 
     function createDrawer() {
-        if (!imageHolder)
-            return null;
 
         let drawer: PenDrawer|null;
         switch (drawType) {
