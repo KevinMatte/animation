@@ -1,29 +1,28 @@
 import Canvas from "../canvas/Canvas.ts";
-import ImageHolder from "./ImageHolder.ts";
-import type {DrawerPaint, PaintData} from "./CanvasTypes.ts";
+import type {DrawerIfc, DrawerStateListener} from "./CanvasTypes.ts";
 
-class PenDrawer extends Canvas implements DrawerPaint {
+class PenDrawer extends Canvas implements DrawerIfc {
+    drawerStateListener?: DrawerStateListener;
     mouseDownEvent: MouseEvent | null = null;
     mouseUpEvent: MouseEvent | null = null;
 
     isDrawing = false;
     lastPosition = {x: 0, y: 0};
-    imageHolder: ImageHolder;
-    points: [number, number][] = [];
+    points: Array<{x: number, y:number}> = [];
 
-    constructor(imageHolder: ImageHolder) {
-        super();
-        this.imageHolder = imageHolder;
+    startDrawing(drawerStateListener: DrawerStateListener): void {
+        this.drawerStateListener = drawerStateListener;
     }
 
-    paint(imageHolder: ImageHolder, data:PaintData): void
+    paint(ctx: CanvasRenderingContext2D): void
     {
-        const ctx: CanvasRenderingContext2D | null = imageHolder.getContext2D();
-        if (ctx) {
-            const points = data;
-            for (let i=0; i<points.length - 1; i++)
-                ImageHolder.drawLine(ctx, points[i][1], points[i][0], points[i+1][0], points[i+1][1]);
+        ctx.beginPath();
+        ctx.moveTo(this.points[0].x, this.points[0].y);
+        for (let i=1; i<this.points.length - 1; i++) {
+            const point = this.points[i];
+            ctx.moveTo(point.x, point.y);
         }
+        ctx.stroke();
     }
 
     setProps(canvas: HTMLCanvasElement, _topX: number, _topY: number) {
@@ -59,14 +58,14 @@ class PenDrawer extends Canvas implements DrawerPaint {
 
         this.isDrawing = true;
         this.lastPosition = this.getMousePos(event);
-        this.points = [[this.lastPosition.x, this.lastPosition.y]];
+        this.points = [{x:this.lastPosition.x, y:this.lastPosition.y}];
     }
 
     handleMouseUp(event: MouseEvent) {
         this.mouseUpEvent = event;
         this.isDrawing = false;
         if (this.points.length > 1)
-            this.imageHolder.addImage(PenDrawer, this.points);
+            this.drawerStateListener?.handleComplete(this);
         this.points = [];
     }
 
@@ -74,13 +73,12 @@ class PenDrawer extends Canvas implements DrawerPaint {
         const ctx = this.canvas?.getContext('2d');
         if (!ctx || !this.isDrawing) return;
         const currentPos = this.getMousePos(event);
-        this.points.push([currentPos.x, currentPos.y]);
+        this.points.push({x:currentPos.x, y:currentPos.y});
 
-        const fromX = this.lastPosition.x;
-        const fromY = this.lastPosition.y;
-        const toX = currentPos.x;
-        const toY = currentPos.y;
-        ImageHolder.drawLine(ctx, fromX, fromY, toX, toY);
+        ctx.beginPath();
+        ctx.moveTo(this.lastPosition.x, this.lastPosition.y);
+        ctx.lineTo(currentPos.x, currentPos.y);
+        ctx.stroke();
 
         this.lastPosition = currentPos;
     }

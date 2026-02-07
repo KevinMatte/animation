@@ -4,7 +4,6 @@ class Canvas {
     canvas?: HTMLCanvasElement;
     hasCapture = false
 
-
     constructor() {
         bindHandlers(this);
     }

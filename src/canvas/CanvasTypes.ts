@@ -1,16 +1,14 @@
-import ImageHolder from "./ImageHolder.ts";
-
-type PaintData = Array<Array<number>>;
-export {type PaintData};
-
-interface DrawerPaint {
-    paint(imageHolder: ImageHolder, data:PaintData): void;
-}
-
-export {type DrawerPaint};
-
 type CanvasAny = string | number | object;
 export {type CanvasAny};
 
-type ImageData = CanvasAny;
-export {type ImageData};
+interface DrawerIfc {
+    startDrawing(drawerStateListener: DrawerStateListener): void;
+    paint(ctx: CanvasRenderingContext2D): void;
+}
+export {type DrawerIfc};
+
+interface DrawerStateListener {
+    handleComplete(drawerPaint: DrawerIfc): void;
+    handleCancel(drawerPaint: DrawerIfc): void;
+}
+export {type DrawerStateListener};

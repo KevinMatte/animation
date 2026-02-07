@@ -24,7 +24,7 @@ export default function PaintArea({topX, topY, drawType, ...props}:
         let drawer: PenDrawer|null;
         switch (drawType) {
             case "line":
-                drawer = new PenDrawer(imageHolder);
+                drawer = new PenDrawer();
                 break;
             default:
                 drawer = null;

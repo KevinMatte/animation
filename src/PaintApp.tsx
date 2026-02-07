@@ -3,7 +3,7 @@ import {useState} from 'react';
 import PaintArea from "./canvas/PaintArea.tsx";
 import ScrollBar from "./canvas/ScrollBar.tsx";
 import {Orientation} from "./canvas/ScrollBar.tsx";
-import ImageHolder from "./canvas/ImageHolder.ts";
+import DrawerGroup from "./canvas/DrawerGroup.ts";
 import ImageContext from "./canvas/ImageContext.ts";
 import Shelf from "./utils/Shelf.tsx";
 
@@ -20,10 +20,10 @@ function PaintApp() {
     }
 
     function createImageHolder() {
-        return new ImageHolder();
+        return new DrawerGroup();
     }
 
-    const [imageHolder, _setImageHolder] = useState<ImageHolder>(createImageHolder);
+    const [imageHolder, _setImageHolder] = useState<DrawerGroup>(createImageHolder);
 
     function scrollBarListener(onX: boolean, pos: number) {
         if (onX)
