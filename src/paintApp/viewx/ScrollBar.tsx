@@ -1,6 +1,6 @@
 import {useEffect, useId, useRef, useState} from "react";
-import ScrollBarCanvas, {type CanvasScrollbarListener} from "./ScrollBarCanvas.ts";
-import type {CanvasAny} from "./CanvasTypes.ts";
+import ScrollBarCanvas, {type CanvasScrollbarListener} from "../view/ScrollBarCanvas.ts";
+import type {CanvasAny} from "../view/CanvasTypes.ts";
 
 // 1. Define the constant values using an object literal and 'as const'
 const Orientation = {

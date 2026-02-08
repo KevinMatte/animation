@@ -1,11 +1,11 @@
 import '@/App.css'
-import PaintApp from "./PaintApp.tsx";
+import AppMain from "./paintApp/AppMain.tsx";
 import {Button} from '@mui/material';
-import Shelf from "./utils/Shelf.tsx";
-import {MenuBar} from "./utils/MenuBar.tsx";
-import PaintAreaModel from "./canvas/PaintAreaModel.ts";
-import {useState} from "react";
-import PaintAreaModelContext from "./canvas/PaintAreaModelContext.ts";
+import Shelf from "./paintApp/viewx/Shelf.tsx";
+import {MenuBar} from "./paintApp/utils/MenuBar.tsx";
+import AppController from "./paintApp/AppController.ts";
+import {useEffect, useState} from "react";
+import AppContext from "./paintApp/AppContext.ts";
 // import * as React from "react";
 // import CssBaseline from '@mui/material/CssBaseline';
 
@@ -26,29 +26,36 @@ function App() {
         );
     }
 
-    function createPaintAreaModel() {
-        return new PaintAreaModel();
+    function createAppController() {
+        return new AppController();
     }
-
-    const [imageHolder, _setImageHolder] = useState<PaintAreaModel>(createPaintAreaModel);
-
-
+    const [appController, _setAppController] = useState<AppController>(createAppController);
+    const [appControllerKey, setAppControllerKey] = useState<number>(0);
+    useEffect(() => {
+        if (appController) {
+            appController.waitForKey(
+                key => setAppControllerKey(key)
+            );
+        }
+    }, [appController, appControllerKey]);
+    // const appControllerKey = '111';
 
     return (
         <>
             {/*<CssBaseline />*/}
             <Shelf direction="column" fill>
                 <Shelf>
-                    {backElement}: This is WIP. Nothing here to see. :-)
+                    {backElement}: This is WIP. Nothing here to see. :-) {appControllerKey}
                 </Shelf>
                 <Shelf direction="row">
-                    <MenuBar handler={imageHolder?.handleMenu}>
-                    </MenuBar>
+                    <AppContext key={appControllerKey} value={appController}>
+                        <MenuBar handler={appController?.handleMenu}/>
+                    </AppContext>
                 </Shelf>
                 <Shelf flex="1">
-                    <PaintAreaModelContext value={imageHolder}>
-                        <PaintApp/>
-                    </PaintAreaModelContext>
+                    <AppContext key={appControllerKey} value={appController}>
+                        <AppMain/>
+                    </AppContext>
                 </Shelf>
                 {/*</div>*/}
             </Shelf>

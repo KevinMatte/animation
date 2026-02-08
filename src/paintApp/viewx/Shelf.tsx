@@ -1,5 +1,5 @@
 import type {ReactNode} from "react";
-import type {MenuAny} from "./MenuTypes.ts";
+import type {MenuAny} from "../utils/MenuTypes.ts";
 
 export default function Shelf({direction, flex, style, fill, children, ...props}:
                                 {

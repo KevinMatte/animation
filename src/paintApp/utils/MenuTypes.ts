@@ -8,8 +8,14 @@ type MenuTypeDefn = {
 type MenuButtonDefn = {
     name: string;
     label: string;
+    visible?: boolean;
     items: Array<MenuTypeDefn>;
 };
+type MenuBarDefn = {
+    [key: string]: MenuButtonDefn;
+};
+export {type MenuBarDefn}
+
 type ButtonEvent = React.MouseEvent<HTMLAnchorElement> | React.MouseEvent<HTMLLIElement>;
 type MenuHandler = (path: string) => void;
 export type {MenuHandler, MenuButtonDefn, ButtonEvent};

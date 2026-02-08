@@ -1,11 +1,8 @@
 import '@/App.css'
 import {useState} from 'react';
-import PaintArea from "./canvas/PaintArea.tsx";
-import ScrollBar from "./canvas/ScrollBar.tsx";
-import {Orientation} from "./canvas/ScrollBar.tsx";
-import Shelf from "./utils/Shelf.tsx";
+import {PaintArea, ScrollBar, Orientation, Shelf} from "./viewx/imports.ts";
 
-function PaintApp() {
+function AppMain() {
     const [x, setX] = useState(0);
     const [y, setY] = useState(0);
     const topLineStyle = {
@@ -44,5 +41,5 @@ function PaintApp() {
     )
 }
 
-export default PaintApp;
+export default AppMain;
 

@@ -1,7 +1,6 @@
-import {useEffect, useId, useRef, useState} from "react";
+import {useEffect, useId, useRef} from "react";
 import {useContext} from "react";
-import PaintAreaModelContext from "./PaintAreaModelContext.ts";
-import DrawerGroup from "./DrawerGroup.ts";
+import AppContext from "../AppContext.ts";
 
 type DrawType = "line" | "circle";
 
@@ -15,24 +14,15 @@ export default function PaintArea({topX, topY, drawType, ...props}:
 ) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const id = useId()
-    const paintAreaModel = useContext(PaintAreaModelContext);
-
-    function createDrawerGroup() {
-        return new DrawerGroup();
-    }
-
-    const [drawer, _setDrawer] = useState(createDrawerGroup);
+    const appContext = useContext(AppContext);
 
     useEffect(() => {
-        if (canvasRef.current && drawer) {
-            drawer.setCanvas(canvasRef.current);
-            paintAreaModel?.setDrawerGroup(drawer);
+        if (canvasRef.current) {
+            appContext?.setCanvas(canvasRef.current);
         }
         return () => {
-            if (drawer)
-                drawer.destroy();
         }
-    }, [drawer, canvasRef]);
+    }, [canvasRef]);
 
     return (
         <div id="DrawAreaCanvas" className="fill">

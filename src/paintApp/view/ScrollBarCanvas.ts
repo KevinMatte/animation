@@ -1,6 +1,6 @@
 // TODO: Min scrollbar size
 // TODO: Zoom shouldn't impact scrollbar width
-import Canvas from "../canvas/Canvas.ts";
+import Canvas from "../view/Canvas.ts";
 
 export type CanvasScrollbarListener = (onX: boolean, pos: number) => void;
 
