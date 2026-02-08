@@ -26,7 +26,7 @@ class ScrollBarCanvas extends Canvas {
                 maxIndex = 100,
                 visibleIndices = 30,
                 step = 1) {
-        super();
+        super(true);
         this.dragStart = null;
         this.onX = onX;
         this.listener = listener;

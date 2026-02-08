@@ -33,18 +33,24 @@ class PenDrawer extends Canvas implements DrawerIfc {
         this.canvas.addEventListener('mouseup', this.handleMouseUp);
         this.canvas.addEventListener('mouseout', this.handleMouseUp);
         this.canvas.addEventListener('click', this.handleMouseClick);
-        this.canvas.addEventListener('mousemove', this.handleMouseMove);
-        this.canvas.addEventListener('mousemove', (event) => console.log(event));
     }
 
     paint(ctx: CanvasRenderingContext2D): void {
-        ctx.beginPath();
-        ctx.moveTo(this.points[0].x, this.points[0].y);
-        for (let i = 1; i < this.points.length - 1; i++) {
-            const point = this.points[i];
-            ctx.moveTo(point.x, point.y);
+        if (this.points.length === 0)
+            return;
+
+        for (let i = 0; i < this.points.length - 2; i++) {
+            const point1 = this.points[i];
+            const point2 = this.points[i+1];
+            ctx.beginPath();
+            ctx.moveTo(point1.x, point1.y);
+            ctx.lineTo(point2.x, point2.y);
+            ctx.stroke();
         }
-        ctx.stroke();
+    }
+
+    getReplacement() {
+        return new PenDrawer();
     }
 
     destroy() {
@@ -58,7 +64,6 @@ class PenDrawer extends Canvas implements DrawerIfc {
             this.canvas.removeEventListener('mouseup', this.handleMouseUp);
             this.canvas.removeEventListener('mouseout', this.handleMouseUp);
             this.canvas.removeEventListener('click', this.handleMouseClick);
-            this.canvas.removeEventListener('mousemove', this.handleMouseMove);
         }
     }
 
@@ -74,6 +79,9 @@ class PenDrawer extends Canvas implements DrawerIfc {
         this.isDrawing = true;
         this.lastPosition = this.getMousePos(event);
         this.points = [{x: this.lastPosition.x, y: this.lastPosition.y}];
+
+        if (this.canvas)
+            this.canvas.addEventListener('mousemove', this.handleMouseMove);
     }
 
     handleMouseUp(event: MouseEvent) {
@@ -81,7 +89,12 @@ class PenDrawer extends Canvas implements DrawerIfc {
         this.isDrawing = false;
         if (this.points.length > 1)
             this.drawerStateListener?.handleComplete(this);
-        this.points = [];
+        else
+            this.drawerStateListener?.handleCancel(this);
+        if (this.canvas) {
+            this.canvas.removeEventListener('mousemove', this.handleMouseMove);
+        }
+        this.removeListeners();
     }
 
     handleMouseMove(event: MouseEvent) {

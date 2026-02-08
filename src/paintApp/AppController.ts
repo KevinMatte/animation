@@ -23,7 +23,7 @@ export default class AppController {
 
     constructor() {
         bindHandlers(this);
-        this.drawerGroup = new DrawerGroup();
+        this.drawerGroup = new DrawerGroup(true);
     }
 
     bumpKey() {

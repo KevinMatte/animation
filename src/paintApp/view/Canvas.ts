@@ -3,15 +3,21 @@ import {bindHandlers} from '../utils/listeners.ts';
 class Canvas {
     canvas?: HTMLCanvasElement;
     hasCapture = false
+    isTopDrawer: boolean;
 
-    constructor() {
+    constructor(isTopDrawer: boolean = false) {
         bindHandlers(this);
+        this.isTopDrawer = isTopDrawer;
     }
 
     setup(canvasElement: HTMLCanvasElement) {
+        if (this.isTopDrawer)
+            window.removeEventListener('resize', this.handleResize);
         this.canvas = canvasElement;
-        window.addEventListener('resize', this.handleResize);
-        this.handleResize(new UIEvent('resize', {}));
+        if (this.isTopDrawer) {
+            window.addEventListener('resize', this.handleResize);
+            this.setCanvasDimensions();
+        }
     }
 
     public getMousePos(event: MouseEvent) {
@@ -82,6 +88,26 @@ class Canvas {
             this.hasCapture = false;
         }
     }
+
+    test() {
+        const canvas = this.canvas;
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        // 1. Set the fill style to the desired background color
+        ctx.fillStyle = "lightblue";
+
+        // 2. Draw a filled rectangle across the entire canvas
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Subsequent drawing operations will appear on top of this background
+        ctx.fillStyle = "red";
+        ctx.beginPath();
+        ctx.arc(150, 75, 50, 0, 2 * Math.PI);
+        ctx.fill();
+    }
+
 }
 
 export default Canvas;
