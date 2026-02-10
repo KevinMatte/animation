@@ -31,6 +31,29 @@ class Canvas {
         };
     };
 
+    copyCanvas(srcCanvas?: HTMLCanvasElement, dstCanvas?: HTMLCanvasElement) {
+
+        if (!srcCanvas)
+            srcCanvas = this.canvas;
+        if (!dstCanvas)
+            dstCanvas = document.createElement('canvas');
+        if (!srcCanvas)
+            return dstCanvas;
+
+        dstCanvas.width = srcCanvas.width;
+        dstCanvas.height = srcCanvas.height;
+        let ctx = dstCanvas.getContext('2d');
+        if (!ctx)
+            return dstCanvas;
+        ctx.drawImage(
+            srcCanvas,
+            0, 0, srcCanvas.width, srcCanvas.height,
+            0, 0, srcCanvas.width, srcCanvas.height
+        );
+
+        return dstCanvas;
+    }
+
     destroy() {
         window.removeEventListener('resize', this.handleResize);
         this.disableCapture();

@@ -21,6 +21,7 @@ class DrawerGroup extends Canvas implements DrawerIfc, DrawerStateListener {
     drawers = new Drawers();
     painters = new Drawers();
     images: Array<DrawerGroupDataItem> = [];
+    cacheCanvas?: HTMLCanvasElement;
 
     constructor(isTopDrawer: boolean = false) {
         super(isTopDrawer);
@@ -29,9 +30,14 @@ class DrawerGroup extends Canvas implements DrawerIfc, DrawerStateListener {
 
     handleMenu(path: string) {
         console.log(`Menu Path: ${path}`);
+        this.launchDrawer("pen", this.drawers.pen);
+    }
+
+    launchDrawer(drawerName: drawType, drawer: DrawerIfc) {
         if (this.canvas) {
-            this.currentDrawerName = "pen";
-            this.painters.pen.startDrawing(this, this.canvas, 0, 0);
+            this.currentDrawerName = drawerName;
+            this.cacheCanvas = this.copyCanvas(this.canvas, this.cacheCanvas);
+            drawer.startDrawing(this, this.canvas, 0, 0);
         }
     }
 
@@ -54,29 +60,26 @@ class DrawerGroup extends Canvas implements DrawerIfc, DrawerStateListener {
             this.setup(canvas);
             this.repaint();
         }
-         if (this.canvas && this.currentDrawerName !== "none")
-             this.drawers.pen.startDrawing(this, this.canvas, 0, 0);
+         if (this.currentDrawerName !== "none")
+             this.launchDrawer("pen", this.drawers.pen);
     }
 
-    handleComplete(drawer: DrawerIfc, _event: MouseEvent): void {
+    handleComplete(drawer: DrawerIfc, event: MouseEvent): void {
         if (!drawer.drawerStateListener || !this.canvas)
             return;
 
         if (this.currentDrawerName === "pen") {
             this.images.push({drawName: "pen", data: this.drawers.pen.getData()});
-            if (_event.shiftKey) {
-                this.currentDrawerName = "pen";
-                this.painters.pen.startDrawing(this, this.canvas, 0, 0);
-            }
+            if (event.shiftKey)
+                this.launchDrawer("pen", this.drawers.pen);
         }
-        if (this.canvas && this.currentDrawerName !== "none")
-            this.drawers.pen.startDrawing(this, this.canvas, 0, 0);
     }
 
     handleCancel(_drawer: DrawerIfc, _event: MouseEvent): void {
         if (this.currentDrawerName !== "none") {
             this.drawers.pen.cancel();
             this.currentDrawerName = "none"
+            this.copyCanvas(this.cacheCanvas, this.canvas);
         }
     }
 

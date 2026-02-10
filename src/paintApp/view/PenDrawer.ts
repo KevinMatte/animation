@@ -27,7 +27,7 @@ class PenDrawer extends Canvas implements DrawerIfc {
         this.drawerStateListener = drawerStateListener;
         this.setup(canvas);
         this.removeListeners();
-        this.addListeners();
+        setTimeout(() => this.addListeners());
     }
 
     private addListeners() {
@@ -98,7 +98,7 @@ class PenDrawer extends Canvas implements DrawerIfc {
     handleMouseUp(event: MouseEvent) {
         this.mouseUpEvent = event;
         this.isDrawing = false;
-        if (this.points.length > 1)
+        if (this.points.length > 1 && !event.ctrlKey)
             this.drawerStateListener?.handleComplete(this, event);
         else
             this.drawerStateListener?.handleCancel(this, event);
