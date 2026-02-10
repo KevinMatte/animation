@@ -58,18 +58,22 @@ class DrawerGroup extends Canvas implements DrawerIfc, DrawerStateListener {
              this.drawers.pen.startDrawing(this, this.canvas, 0, 0);
     }
 
-    handleComplete(drawer: DrawerIfc): void {
+    handleComplete(drawer: DrawerIfc, _event: MouseEvent): void {
         if (!drawer.drawerStateListener || !this.canvas)
             return;
 
         if (this.currentDrawerName === "pen") {
             this.images.push({drawName: "pen", data: this.drawers.pen.getData()});
+            if (_event.shiftKey) {
+                this.currentDrawerName = "pen";
+                this.painters.pen.startDrawing(this, this.canvas, 0, 0);
+            }
         }
         if (this.canvas && this.currentDrawerName !== "none")
             this.drawers.pen.startDrawing(this, this.canvas, 0, 0);
     }
 
-    handleCancel(_drawer: DrawerIfc): void {
+    handleCancel(_drawer: DrawerIfc, _event: MouseEvent): void {
         if (this.currentDrawerName !== "none") {
             this.drawers.pen.cancel();
             this.currentDrawerName = "none"
@@ -86,7 +90,8 @@ class DrawerGroup extends Canvas implements DrawerIfc, DrawerStateListener {
 
     startDrawing(drawerStateListener: DrawerStateListener): void {
         this.drawerStateListener = drawerStateListener;
-        this.drawerStateListener.handleComplete(this);
+        const event = new MouseEvent("mouseup");
+        this.drawerStateListener.handleComplete(this, event);
     }
 }
 

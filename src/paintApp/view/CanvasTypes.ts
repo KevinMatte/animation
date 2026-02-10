@@ -13,7 +13,7 @@ export {type DrawerIfc};
 
 
 interface DrawerStateListener {
-    handleComplete(drawerPaint: DrawerIfc): void;
-    handleCancel(drawerPaint: DrawerIfc): void;
+    handleComplete(drawerPaint: DrawerIfc, event: MouseEvent): void;
+    handleCancel(drawerPaint: DrawerIfc, event: MouseEvent): void;
 }
 export {type DrawerStateListener};
