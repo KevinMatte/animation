@@ -2,6 +2,10 @@ import Canvas from "../view/Canvas.ts";
 import type {DrawerIfc, DrawerStateListener} from "./CanvasTypes.ts";
 import {bindHandlers} from "../utils/listeners.ts";
 
+type PenDrawerData = Array<{ x: number, y: number }>;
+export {type PenDrawerData}
+
+
 class PenDrawer extends Canvas implements DrawerIfc {
     drawerStateListener?: DrawerStateListener;
     mouseDownEvent: MouseEvent | null = null;
@@ -9,7 +13,7 @@ class PenDrawer extends Canvas implements DrawerIfc {
 
     isDrawing = false;
     lastPosition = {x: 0, y: 0};
-    points: Array<{ x: number, y: number }> = [];
+    points: PenDrawerData = [];
 
     constructor() {
         super();
@@ -30,18 +34,19 @@ class PenDrawer extends Canvas implements DrawerIfc {
         if (!this.canvas)
             return;
         this.canvas.addEventListener('mousedown', this.handleMouseDown);
+        this.canvas.addEventListener('mousemove', this.handleMouseMove);
         this.canvas.addEventListener('mouseup', this.handleMouseUp);
         this.canvas.addEventListener('mouseout', this.handleMouseUp);
         this.canvas.addEventListener('click', this.handleMouseClick);
     }
 
-    paint(ctx: CanvasRenderingContext2D): void {
-        if (this.points.length === 0)
+    paint(ctx: CanvasRenderingContext2D, points: PenDrawerData): void {
+        if (points.length === 0)
             return;
 
-        for (let i = 0; i < this.points.length - 2; i++) {
-            const point1 = this.points[i];
-            const point2 = this.points[i+1];
+        for (let i = 0; i < points.length - 2; i++) {
+            const point1 = points[i];
+            const point2 = points[i+1];
             ctx.beginPath();
             ctx.moveTo(point1.x, point1.y);
             ctx.lineTo(point2.x, point2.y);
@@ -49,8 +54,13 @@ class PenDrawer extends Canvas implements DrawerIfc {
         }
     }
 
-    getReplacement() {
-        return new PenDrawer();
+    getData(): PenDrawerData {
+        return this.points;
+    }
+
+    cancel() {
+        this.isDrawing = false;
+        this.removeListeners();
     }
 
     destroy() {
@@ -61,6 +71,7 @@ class PenDrawer extends Canvas implements DrawerIfc {
     private removeListeners() {
         if (this.canvas) {
             this.canvas.removeEventListener('mousedown', this.handleMouseDown);
+            this.canvas.removeEventListener('mousemove', this.handleMouseMove);
             this.canvas.removeEventListener('mouseup', this.handleMouseUp);
             this.canvas.removeEventListener('mouseout', this.handleMouseUp);
             this.canvas.removeEventListener('click', this.handleMouseClick);
@@ -79,9 +90,6 @@ class PenDrawer extends Canvas implements DrawerIfc {
         this.isDrawing = true;
         this.lastPosition = this.getMousePos(event);
         this.points = [{x: this.lastPosition.x, y: this.lastPosition.y}];
-
-        if (this.canvas)
-            this.canvas.addEventListener('mousemove', this.handleMouseMove);
     }
 
     handleMouseUp(event: MouseEvent) {
@@ -91,9 +99,6 @@ class PenDrawer extends Canvas implements DrawerIfc {
             this.drawerStateListener?.handleComplete(this);
         else
             this.drawerStateListener?.handleCancel(this);
-        if (this.canvas) {
-            this.canvas.removeEventListener('mousemove', this.handleMouseMove);
-        }
         this.removeListeners();
     }
 

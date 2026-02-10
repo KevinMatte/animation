@@ -89,7 +89,7 @@ class Canvas {
         }
     }
 
-    test() {
+    _test = () => {
         const canvas = this.canvas;
         if (!canvas) return;
         const ctx = canvas.getContext("2d");

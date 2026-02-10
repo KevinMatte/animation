@@ -6,8 +6,6 @@ import {MenuBar} from "./paintApp/utils/MenuBar.tsx";
 import AppController from "./paintApp/AppController.ts";
 import {useEffect, useState} from "react";
 import AppContext from "./paintApp/AppContext.ts";
-// import * as React from "react";
-// import CssBaseline from '@mui/material/CssBaseline';
 
 function App() {
     const queryString = window.location.search;
@@ -38,7 +36,6 @@ function App() {
             );
         }
     }, [appController, appControllerKey]);
-    // const appControllerKey = '111';
 
     return (
         <>

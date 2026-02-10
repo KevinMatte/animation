@@ -1,5 +1,4 @@
 import DrawerGroup from "./view/DrawerGroup.ts";
-import {PenDrawer} from "./view/PenDrawer.ts";
 import {bindHandlers} from "./utils/listeners.ts";
 import type {MenuBarDefn} from "./utils/MenuTypes.ts";
 
@@ -35,10 +34,8 @@ export default class AppController {
     }
 
     handleMenu(path: string) {
-        console.log(`Menu Path: ${path}`);
         if (this.drawerGroup) {
-            let drawer = new PenDrawer();
-            this.drawerGroup.startDrawer(drawer);
+            this.drawerGroup.handleMenu(path);
             this.bumpKey();
         }
     }

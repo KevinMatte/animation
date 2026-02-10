@@ -8,10 +8,6 @@ interface DrawerIfc {
         drawerStateListener: DrawerStateListener,
         canvas: HTMLCanvasElement, _topX: number, _topY: number
     ): void;
-
-    paint(ctx: CanvasRenderingContext2D): void;
-
-    getReplacement(): DrawerIfc;
 }
 export {type DrawerIfc};
 
