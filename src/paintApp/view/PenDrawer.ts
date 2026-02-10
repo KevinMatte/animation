@@ -38,6 +38,7 @@ class PenDrawer extends Canvas implements DrawerIfc {
         this.canvas.addEventListener('mouseup', this.handleMouseUp);
         this.canvas.addEventListener('mouseout', this.handleMouseUp);
         this.canvas.addEventListener('click', this.handleMouseClick);
+        window.addEventListener('keydown', this.handleKeyDown);
     }
 
     paint(ctx: CanvasRenderingContext2D, points: PenDrawerData): void {
@@ -58,9 +59,10 @@ class PenDrawer extends Canvas implements DrawerIfc {
         return this.points;
     }
 
-    cancel() {
+    handleKeyDown(_event: KeyboardEvent) {
         this.isDrawing = false;
         this.removeListeners();
+        this.drawerStateListener?.handleCancel(this, _event);
     }
 
     destroy() {
@@ -75,6 +77,7 @@ class PenDrawer extends Canvas implements DrawerIfc {
             this.canvas.removeEventListener('mouseup', this.handleMouseUp);
             this.canvas.removeEventListener('mouseout', this.handleMouseUp);
             this.canvas.removeEventListener('click', this.handleMouseClick);
+            window.removeEventListener('keydown', this.handleKeyDown);
         }
     }
 
@@ -86,6 +89,7 @@ class PenDrawer extends Canvas implements DrawerIfc {
     handleMouseDown(event: MouseEvent) {
         if (event.button !== 0)
             return;
+        this.canvas?.focus();
 
         this.mouseDownEvent = event;
         this.mouseUpEvent = null;
@@ -98,7 +102,7 @@ class PenDrawer extends Canvas implements DrawerIfc {
     handleMouseUp(event: MouseEvent) {
         this.mouseUpEvent = event;
         this.isDrawing = false;
-        if (this.points.length > 1 && !event.ctrlKey)
+        if (this.points.length > 1)
             this.drawerStateListener?.handleComplete(this, event);
         else
             this.drawerStateListener?.handleCancel(this, event);

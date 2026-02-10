@@ -75,9 +75,8 @@ class DrawerGroup extends Canvas implements DrawerIfc, DrawerStateListener {
         }
     }
 
-    handleCancel(_drawer: DrawerIfc, _event: MouseEvent): void {
+    handleCancel(_drawer: DrawerIfc, _event: MouseEvent|KeyboardEvent): void {
         if (this.currentDrawerName !== "none") {
-            this.drawers.pen.cancel();
             this.currentDrawerName = "none"
             this.copyCanvas(this.cacheCanvas, this.canvas);
         }

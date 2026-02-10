@@ -14,6 +14,6 @@ export {type DrawerIfc};
 
 interface DrawerStateListener {
     handleComplete(drawerPaint: DrawerIfc, event: MouseEvent): void;
-    handleCancel(drawerPaint: DrawerIfc, event: MouseEvent): void;
+    handleCancel(drawerPaint: DrawerIfc, event: MouseEvent|KeyboardEvent): void;
 }
 export {type DrawerStateListener};
