@@ -22,7 +22,9 @@ class PenDrawer extends Canvas implements DrawerIfc {
 
     startDrawing(
         drawerStateListener: DrawerStateListener,
-        canvas: HTMLCanvasElement, _topX: number, _topY: number
+        canvas: HTMLCanvasElement,
+        _original: HTMLCanvasElement,
+        _topX: number, _topY: number
     ): void {
         this.drawerStateListener = drawerStateListener;
         this.setup(canvas);
@@ -38,7 +40,6 @@ class PenDrawer extends Canvas implements DrawerIfc {
         this.canvas.addEventListener('mouseup', this.handleMouseUp);
         this.canvas.addEventListener('mouseout', this.handleMouseUp);
         this.canvas.addEventListener('click', this.handleMouseClick);
-        window.addEventListener('keydown', this.handleKeyDown);
     }
 
     paint(ctx: CanvasRenderingContext2D, points: PenDrawerData): void {
@@ -59,12 +60,6 @@ class PenDrawer extends Canvas implements DrawerIfc {
         return this.points;
     }
 
-    handleKeyDown(_event: KeyboardEvent) {
-        this.isDrawing = false;
-        this.removeListeners();
-        this.drawerStateListener?.handleCancel(this, _event);
-    }
-
     destroy() {
         super.destroy();
         this.removeListeners();
@@ -77,7 +72,6 @@ class PenDrawer extends Canvas implements DrawerIfc {
             this.canvas.removeEventListener('mouseup', this.handleMouseUp);
             this.canvas.removeEventListener('mouseout', this.handleMouseUp);
             this.canvas.removeEventListener('click', this.handleMouseClick);
-            window.removeEventListener('keydown', this.handleKeyDown);
         }
     }
 
@@ -97,6 +91,11 @@ class PenDrawer extends Canvas implements DrawerIfc {
         this.isDrawing = true;
         this.lastPosition = this.getMousePos(event);
         this.points = [{x: this.lastPosition.x, y: this.lastPosition.y}];
+    }
+
+    cancelDrawing(): void {
+        this.isDrawing = false;
+        this.removeListeners();
     }
 
     handleMouseUp(event: MouseEvent) {

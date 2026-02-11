@@ -6,8 +6,14 @@ interface DrawerIfc {
 
     startDrawing(
         drawerStateListener: DrawerStateListener,
-        canvas: HTMLCanvasElement, _topX: number, _topY: number
+        canvas: HTMLCanvasElement,
+        original: HTMLCanvasElement,
+        _topX: number,
+        _topY: number,
+
     ): void;
+
+    cancelDrawing(): void;
 }
 export {type DrawerIfc};
 

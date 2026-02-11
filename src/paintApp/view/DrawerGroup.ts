@@ -37,7 +37,8 @@ class DrawerGroup extends Canvas implements DrawerIfc, DrawerStateListener {
         if (this.canvas) {
             this.currentDrawerName = drawerName;
             this.cacheCanvas = this.copyCanvas(this.canvas, this.cacheCanvas);
-            drawer.startDrawing(this, this.canvas, 0, 0);
+            drawer.startDrawing(this, this.canvas, this.cacheCanvas, 0, 0);
+            window.addEventListener('keydown', this.handleKeyDown);
         }
     }
 
@@ -72,14 +73,32 @@ class DrawerGroup extends Canvas implements DrawerIfc, DrawerStateListener {
             this.images.push({drawName: "pen", data: this.drawers.pen.getData()});
             if (event.shiftKey)
                 this.launchDrawer("pen", this.drawers.pen);
+            else
+                window.removeEventListener('keydown', this.handleKeyDown);
         }
+        else
+            window.removeEventListener('keydown', this.handleKeyDown);
     }
 
-    handleCancel(_drawer: DrawerIfc, _event: MouseEvent|KeyboardEvent): void {
+    handleCancel(_drawer: DrawerIfc, _event: KeyboardEvent): void {
         if (this.currentDrawerName !== "none") {
             this.currentDrawerName = "none"
             this.copyCanvas(this.cacheCanvas, this.canvas);
         }
+
+        window.removeEventListener('keydown', this.handleKeyDown);
+    }
+
+    handleKeyDown(event: KeyboardEvent): void {
+        if (event.key === 'Escape' && this.currentDrawerName !== "none") {
+            this.cancelDrawing();
+        }
+    }
+
+    cancelDrawing(): void {
+        this.drawers.pen.cancelDrawing();
+        this.currentDrawerName = "none"
+        this.copyCanvas(this.cacheCanvas, this.canvas);
     }
 
     // noinspection JSUnusedGlobalSymbols
@@ -90,7 +109,10 @@ class DrawerGroup extends Canvas implements DrawerIfc, DrawerStateListener {
         }
     }
 
-    startDrawing(drawerStateListener: DrawerStateListener): void {
+    startDrawing(
+        drawerStateListener: DrawerStateListener,
+        _original: HTMLCanvasElement): void
+    {
         this.drawerStateListener = drawerStateListener;
         const event = new MouseEvent("mouseup");
         this.drawerStateListener.handleComplete(this, event);
