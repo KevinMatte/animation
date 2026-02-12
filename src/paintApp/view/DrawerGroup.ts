@@ -1,26 +1,19 @@
-import type {DrawerIfc, DrawerStateListener, PenDrawerData} from "./CanvasTypes.ts";
-import Canvas from "./Canvas.ts";
+import type {
+    DrawerData,
+    DrawerGroupData,
+    DrawerIfc,
+    DrawerStateListener,
+    DrawType,
+} from "./CanvasTypes.ts";
+import {Drawer} from "./Drawer.ts";
 import {bindHandlers} from "../utils/listeners.ts";
-import {PenDrawer} from "./PenDrawer.ts";
+import {Drawers} from "./Drawers.ts";
 
-
-type drawType = "none" | "pen";
-
-type DrawerGroupDataItem = {
-    drawName: drawType;
-    data: PenDrawerData;
-}
-
-class Drawers {
-    pen: PenDrawer = new PenDrawer();
-}
-
-class DrawerGroup extends Canvas implements DrawerIfc, DrawerStateListener {
-    drawerStateListener?: DrawerStateListener;
-    currentDrawerName: drawType = "none";
+class DrawerGroup extends Drawer implements DrawerStateListener {
+    currentDrawerType: DrawType = "none";
     drawers = new Drawers();
     painters = new Drawers();
-    images: Array<DrawerGroupDataItem> = [];
+    images: DrawerGroupData = [];
     cacheCanvas?: HTMLCanvasElement;
 
     constructor(isTopDrawer: boolean = false) {
@@ -30,19 +23,22 @@ class DrawerGroup extends Canvas implements DrawerIfc, DrawerStateListener {
 
     handleMenu(path: string) {
         console.log(`Menu Path: ${path}`);
-        this.launchDrawer("pen", this.drawers.pen);
+        const lastSlash = path.lastIndexOf("/");
+        const drawType = path.substring(lastSlash + 1, path.length);
+        this.launchDrawer(drawType as DrawType);
     }
 
-    launchDrawer(drawerName: drawType, drawer: DrawerIfc) {
+    launchDrawer(drawType: DrawType) {
         if (this.canvas) {
-            this.currentDrawerName = drawerName;
+            let drawer = this.drawers.getDrawer(drawType);
+            this.currentDrawerType = drawType;
             this.cacheCanvas = this.copyCanvas(this.canvas, this.cacheCanvas);
             drawer.startDrawing(this, this.canvas, this.cacheCanvas, 0, 0);
             window.addEventListener('keydown', this.handleKeyDown);
         }
     }
 
-    handleResize(event : UIEvent){
+    handleResize(event: UIEvent) {
         super.handleResize(event);
         this.repaint();
     }
@@ -61,28 +57,27 @@ class DrawerGroup extends Canvas implements DrawerIfc, DrawerStateListener {
             this.setup(canvas);
             this.repaint();
         }
-         if (this.currentDrawerName !== "none")
-             this.launchDrawer("pen", this.drawers.pen);
+        if (this.currentDrawerType !== "none")
+            this.launchDrawer(this.currentDrawerType);
     }
 
     handleComplete(drawer: DrawerIfc, event: MouseEvent): void {
         if (!drawer.drawerStateListener || !this.canvas)
             return;
 
-        if (this.currentDrawerName === "pen") {
-            this.images.push({drawName: "pen", data: this.drawers.pen.getData()});
+        if (this.currentDrawerType !== "none") {
+            this.images.push({drawType: this.currentDrawerType, data: this.drawers.getDrawer(this.currentDrawerType).getData()});
             if (event.shiftKey)
-                this.launchDrawer("pen", this.drawers.pen);
+                this.launchDrawer(this.currentDrawerType);
             else
                 window.removeEventListener('keydown', this.handleKeyDown);
-        }
-        else
+        } else
             window.removeEventListener('keydown', this.handleKeyDown);
     }
 
     handleCancel(_drawer: DrawerIfc, _event: KeyboardEvent): void {
-        if (this.currentDrawerName !== "none") {
-            this.currentDrawerName = "none"
+        if (this.currentDrawerType !== "none") {
+            this.currentDrawerType = "none"
             this.copyCanvas(this.cacheCanvas, this.canvas);
         }
 
@@ -90,33 +85,51 @@ class DrawerGroup extends Canvas implements DrawerIfc, DrawerStateListener {
     }
 
     handleKeyDown(event: KeyboardEvent): void {
-        if (event.key === 'Escape' && this.currentDrawerName !== "none") {
+        if (event.key === 'Escape' && this.currentDrawerType !== "none") {
             this.cancelDrawing();
         }
     }
 
     cancelDrawing(): void {
-        this.drawers.pen.cancelDrawing();
-        this.currentDrawerName = "none"
+        this.drawers.getDrawer(this.currentDrawerType).cancelDrawing();
+        this.currentDrawerType = "none"
         this.copyCanvas(this.cacheCanvas, this.canvas);
     }
 
     // noinspection JSUnusedGlobalSymbols
-    paint(ctx: CanvasRenderingContext2D){
-        for (let i=0; i<this.images.length; i++) {
+    paint(ctx: CanvasRenderingContext2D) {
+        for (let i = 0; i < this.images.length; i++) {
             const image = this.images[i];
-            this.painters.pen.paint(ctx, image.data);
+            this.painters.getDrawer(image.drawType).paint(ctx, image.data);
         }
     }
 
     startDrawing(
         drawerStateListener: DrawerStateListener,
-        _original: HTMLCanvasElement): void
-    {
+        _original: HTMLCanvasElement): void {
         this.drawerStateListener = drawerStateListener;
         const event = new MouseEvent("mouseup");
         this.drawerStateListener.handleComplete(this, event);
     }
+
+    /* TBD: ---- *Data() methods when grouping is implemented. ---- */
+
+    getData(): DrawerData {
+        throw new Error("Method not implemented.");
+    }
+
+    initData(): void {
+        throw new Error("Method not implemented.");
+    }
+
+    endData(_event: MouseEvent): void {
+        throw new Error("Method not implemented.");
+    }
+
+    addData(_currentPos: { x: number; y: number; }, _ctx: CanvasRenderingContext2D): void {
+        throw new Error("Method not implemented.");
+    }
 }
 
 export default DrawerGroup;
+

@@ -54,10 +54,10 @@ class Canvas {
         return dstCanvas;
     }
 
-    destroy() {
-        window.removeEventListener('resize', this.handleResize);
-        this.disableCapture();
-    }
+    // destroy() {
+    //     window.removeEventListener('resize', this.handleResize);
+    //     this.disableCapture();
+    // }
 
     setCanvasDimensions() {
         if (!this.canvas)

@@ -2,18 +2,18 @@ import type {DrawerData, DrawerIfc, DrawerStateListener} from "./CanvasTypes.ts"
 import Canvas from "./Canvas.ts";
 
 export abstract class Drawer extends Canvas implements DrawerIfc {
-    drawerStateListener?: DrawerStateListener;
     mouseDownEvent: MouseEvent | null = null;
     mouseUpEvent: MouseEvent | null = null;
 
     isDrawing = false;
     lastPosition = {x: 0, y: 0};
+    drawerStateListener?: DrawerStateListener;
 
     abstract startDrawing(
         drawerStateListener: DrawerStateListener,
         canvas: HTMLCanvasElement,
-        _original: HTMLCanvasElement,
-        _topX: number, _topY: number
+        original: HTMLCanvasElement,
+        topX: number, topY: number
     ): void;
 
     addListeners() {

@@ -1,11 +1,11 @@
-import type {DrawerData, DrawerStateListener} from "./CanvasTypes.ts";
+import type {DrawerData, DrawerStateListener, PenDrawerData} from "./CanvasTypes.ts";
 import {bindHandlers} from "../utils/listeners.ts";
 import {Drawer} from "./Drawer.ts";
 
 
 
 class PenDrawer extends Drawer {
-    points: DrawerData = [];
+    points: PenDrawerData = [];
 
     constructor() {
         super();
@@ -23,7 +23,8 @@ class PenDrawer extends Drawer {
         this.removeListeners();
         setTimeout(() => this.addListeners());
     }
-    paint(ctx: CanvasRenderingContext2D, points: DrawerData): void {
+    paint(ctx: CanvasRenderingContext2D, drawerData: DrawerData): void {
+        const points = drawerData as PenDrawerData;
         if (points.length === 0)
             return;
         for (let i = 0; i < points.length - 2; i++) {
