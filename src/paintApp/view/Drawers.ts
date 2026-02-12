@@ -3,6 +3,7 @@ import type {DrawType} from "./CanvasTypes.ts";
 import {PenDrawer} from "./PenDrawer.ts";
 import DrawerGroup from "./DrawerGroup.ts";
 import {RectangleDrawer} from "./RectangleDrawer.ts";
+import {EllipseDrawer} from "./EllipseDrawer.ts";
 
 class Drawers {
     instances: { [drawType: string]: Drawer } = {};
@@ -17,6 +18,9 @@ class Drawers {
                 break;
             case "rectangle":
                 instance = new RectangleDrawer();
+                break;
+            case "ellipse":
+                instance = new EllipseDrawer();
                 break;
             case "group":
                 instance = new DrawerGroup();

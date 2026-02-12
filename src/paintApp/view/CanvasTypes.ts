@@ -28,10 +28,10 @@ type Point = { x: number, y: number }
 type PenDrawerData = Array<Point>;
 export {type PenDrawerData}
 
-type RectangleDrawerData = { start: Point; end: Point; };
-export {type RectangleDrawerData}
+type TwoPointData = { start: Point; end: Point; };
+export {type TwoPointData}
 
-type DrawType = "none" | "pen" | "group" | "rectangle";
+type DrawType = "none" | "pen" | "group" | "rectangle" | "ellipse";
 export {type DrawType};
 
 type DrawerGroupDataItem = {
@@ -42,7 +42,7 @@ type DrawerGroupDataItem = {
 type DrawerGroupData = Array<DrawerGroupDataItem>;
 export {type DrawerGroupData};
 
-type DrawerData = PenDrawerData | DrawerGroupData | RectangleDrawerData;
+type DrawerData = PenDrawerData | DrawerGroupData | TwoPointData;
 export {type DrawerData}
 
 

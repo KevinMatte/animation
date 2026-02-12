@@ -4,7 +4,7 @@ import {Drawer} from "./Drawer.ts";
 
 
 
-class RectangleDrawer extends Drawer {
+class EllipseDrawer extends Drawer {
     data: TwoPointData = {start: {x: 0, y: 0}, end: {x: 0, y: 0}};
     hasStarted: boolean = false;
     original: HTMLCanvasElement | null = null;
@@ -31,12 +31,13 @@ class RectangleDrawer extends Drawer {
         const points = drawerData as TwoPointData;
         const point1 = points.start;
         const point2 = points.end;
+        let radiusX = (point2.x - point1.x) / 2;
+        const centerX = point1.x + radiusX;
+        let radiusY = (point2.y - point1.y) / 2;
+        const centerY = point1.y + radiusY;
+
         ctx.beginPath();
-        ctx.moveTo(point1.x, point1.y);
-        ctx.lineTo(point1.x, point2.y);
-        ctx.lineTo(point2.x, point2.y);
-        ctx.lineTo(point2.x, point1.y);
-        ctx.lineTo(point1.x, point1.y);
+        ctx.ellipse(centerX, centerY, Math.abs(radiusX), Math.abs(radiusY), 0, 0, Math.PI * 2);
         ctx.stroke();
     }
 
@@ -68,4 +69,4 @@ class RectangleDrawer extends Drawer {
     }
 }
 
-export {RectangleDrawer};
+export {EllipseDrawer};

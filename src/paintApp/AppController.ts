@@ -9,7 +9,7 @@ export default class AppController {
         items: [
             {name: 'pen', label: 'Pen'},
             {name: 'rectangle', label: 'Rectangle'},
-            {name: 'circle', label: 'TBD: Circle'},
+            {name: 'ellipse', label: 'Ellipse'},
         ]
     };
     helpMenu: MenuBarDefn = {
