@@ -24,10 +24,14 @@ interface DrawerStateListener {
 }
 export {type DrawerStateListener};
 
-type PenDrawerData = Array<{ x: number, y: number }>;
+type Point = { x: number, y: number }
+type PenDrawerData = Array<Point>;
 export {type PenDrawerData}
 
-type DrawType = "none" | "pen" | "group";
+type RectangleDrawerData = { start: Point; end: Point; };
+export {type RectangleDrawerData}
+
+type DrawType = "none" | "pen" | "group" | "rectangle";
 export {type DrawType};
 
 type DrawerGroupDataItem = {
@@ -38,7 +42,7 @@ type DrawerGroupDataItem = {
 type DrawerGroupData = Array<DrawerGroupDataItem>;
 export {type DrawerGroupData};
 
-type DrawerData = PenDrawerData | DrawerGroupData;
+type DrawerData = PenDrawerData | DrawerGroupData | RectangleDrawerData;
 export {type DrawerData}
 
 

@@ -5,6 +5,7 @@ export abstract class Drawer extends Canvas implements DrawerIfc {
     mouseDownEvent: MouseEvent | null = null;
     mouseUpEvent: MouseEvent | null = null;
 
+    cacheCanvas?: HTMLCanvasElement;
     isDrawing = false;
     lastPosition = {x: 0, y: 0};
     drawerStateListener?: DrawerStateListener;

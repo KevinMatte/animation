@@ -14,7 +14,6 @@ class DrawerGroup extends Drawer implements DrawerStateListener {
     drawers = new Drawers();
     painters = new Drawers();
     images: DrawerGroupData = [];
-    cacheCanvas?: HTMLCanvasElement;
 
     constructor(isTopDrawer: boolean = false) {
         super(isTopDrawer);

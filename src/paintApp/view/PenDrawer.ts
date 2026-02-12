@@ -27,14 +27,11 @@ class PenDrawer extends Drawer {
         const points = drawerData as PenDrawerData;
         if (points.length === 0)
             return;
-        for (let i = 0; i < points.length - 2; i++) {
-            const point1 = points[i];
-            const point2 = points[i + 1];
-            ctx.beginPath();
-            ctx.moveTo(point1.x, point1.y);
-            ctx.lineTo(point2.x, point2.y);
-            ctx.stroke();
-        }
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+        for (let i = 1; i < points.length; i++)
+            ctx.lineTo(points[i].x, points[i].y);
+        ctx.stroke();
     }
 
     initData() {

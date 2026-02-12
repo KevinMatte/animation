@@ -8,8 +8,8 @@ export default class AppController {
         name: 'file',
         items: [
             {name: 'pen', label: 'Pen'},
-            {name: 'line', label: 'Line'},
-            {name: 'circle', label: 'Circle'},
+            {name: 'rectangle', label: 'Rectangle'},
+            {name: 'circle', label: 'TBD: Circle'},
         ]
     };
     helpMenu: MenuBarDefn = {
