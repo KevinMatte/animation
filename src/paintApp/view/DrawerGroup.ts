@@ -114,19 +114,17 @@ class DrawerGroup extends Drawer implements DrawerStateListener {
     /* TBD: ---- *Data() methods when grouping is implemented. ---- */
 
     getData(): DrawerData {
-        throw new Error("Method not implemented.");
+        return this.images;
     }
 
     initData(): void {
-        throw new Error("Method not implemented.");
+        this.images = [];
     }
 
     endData(_event: MouseEvent): void {
-        throw new Error("Method not implemented.");
     }
 
     addData(_currentPos: { x: number; y: number; }, _ctx: CanvasRenderingContext2D): void {
-        throw new Error("Method not implemented.");
     }
 }
 
