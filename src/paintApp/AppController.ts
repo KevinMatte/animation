@@ -8,6 +8,7 @@ export default class AppController {
         name: 'file',
         items: [
             {name: 'pen', label: 'Pen'},
+            {name: 'line', label: 'Line'},
             {name: 'rectangle', label: 'Rectangle'},
             {name: 'ellipse', label: 'Ellipse'},
         ]

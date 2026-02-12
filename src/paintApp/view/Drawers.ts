@@ -4,6 +4,7 @@ import {PenDrawer} from "./PenDrawer.ts";
 import DrawerGroup from "./DrawerGroup.ts";
 import {RectangleDrawer} from "./RectangleDrawer.ts";
 import {EllipseDrawer} from "./EllipseDrawer.ts";
+import {LineDrawer} from "./LineDrawer.ts";
 
 class Drawers {
     instances: { [drawType: string]: Drawer } = {};
@@ -15,6 +16,9 @@ class Drawers {
         switch (drawType) {
             case "pen":
                 instance = new PenDrawer();
+                break;
+            case "line":
+                instance = new LineDrawer();
                 break;
             case "rectangle":
                 instance = new RectangleDrawer();

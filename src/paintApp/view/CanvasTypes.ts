@@ -31,7 +31,7 @@ export {type PenDrawerData}
 type TwoPointData = { start: Point; end: Point; };
 export {type TwoPointData}
 
-type DrawType = "none" | "pen" | "group" | "rectangle" | "ellipse";
+type DrawType = "none" | "pen" | "group" | "rectangle" | "ellipse" | "line";
 export {type DrawType};
 
 type DrawerGroupDataItem = {

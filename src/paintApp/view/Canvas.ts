@@ -85,13 +85,13 @@ class Canvas {
         this.canvas.addEventListener('pointerup', this.handlePointerRelease);
     }
 
-    disableCapture() {
-        if (this.canvas && this.hasCapture) {
-            this.canvas.removeEventListener('pointerdown', this.handlePointerCapture);
-            this.canvas.removeEventListener('pointerup', this.handlePointerRelease);
-            this.hasCapture = false;
-        }
-    }
+    // disableCapture() {
+    //     if (this.canvas && this.hasCapture) {
+    //         this.canvas.removeEventListener('pointerdown', this.handlePointerCapture);
+    //         this.canvas.removeEventListener('pointerup', this.handlePointerRelease);
+    //         this.hasCapture = false;
+    //     }
+    // }
 
     handlePointerCapture(event: PointerEvent) {
         if (!this.canvas) return;

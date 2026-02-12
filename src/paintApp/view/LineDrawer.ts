@@ -3,7 +3,7 @@ import {bindHandlers} from "../utils/listeners.ts";
 import {TwoPointDrawer} from "./TwoPointDrawer.ts";
 
 
-class RectangleDrawer extends TwoPointDrawer {
+class LineDrawer extends TwoPointDrawer {
 
     constructor() {
         super();
@@ -16,12 +16,9 @@ class RectangleDrawer extends TwoPointDrawer {
         const point2 = points.end;
         ctx.beginPath();
         ctx.moveTo(point1.x, point1.y);
-        ctx.lineTo(point1.x, point2.y);
         ctx.lineTo(point2.x, point2.y);
-        ctx.lineTo(point2.x, point1.y);
-        ctx.lineTo(point1.x, point1.y);
         ctx.stroke();
     }
 }
 
-export {RectangleDrawer};
+export {LineDrawer};
