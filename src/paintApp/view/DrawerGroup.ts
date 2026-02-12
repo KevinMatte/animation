@@ -1,7 +1,7 @@
-import type {DrawerIfc, DrawerStateListener} from "./CanvasTypes.ts";
+import type {DrawerIfc, DrawerStateListener, PenDrawerData} from "./CanvasTypes.ts";
 import Canvas from "./Canvas.ts";
 import {bindHandlers} from "../utils/listeners.ts";
-import {PenDrawer, type PenDrawerData} from "./PenDrawer.ts";
+import {PenDrawer} from "./PenDrawer.ts";
 
 
 type drawType = "none" | "pen";

@@ -23,3 +23,9 @@ interface DrawerStateListener {
     handleCancel(drawerPaint: DrawerIfc, event: MouseEvent|KeyboardEvent): void;
 }
 export {type DrawerStateListener};
+
+type PenDrawerData = Array<{ x: number, y: number }>;
+export {type PenDrawerData}
+type DrawerData = PenDrawerData;
+export {type DrawerData}
+
